@@ -1,0 +1,2 @@
+docker run --name postgis-310 -e POSTGRES_PASSWORD="postgres" -d -p 5433:5433 postgres:latest
+ssh -i ~/.ssh/ehsan.private.pem root@18.192.212.129
