@@ -11,4 +11,4 @@ To track the replies, a python script uses the Twint library to fetch the replie
 The below diagram is a high-level demonstration.
 
 
-![alt text](https://github.com/https://github.com/ehsansasanian/310-ai/diagram.jpg)
+![alt text](https://github.com/ehsansasanian/310-ai/blob/main/diagram.jpg)
