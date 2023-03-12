@@ -1,4 +1,4 @@
-package com.ai.demo.scraper;
+package com.ai.demo.service;
 
 import com.ai.demo.config.ScrapperConfiguration;
 import lombok.extern.slf4j.Slf4j;
@@ -11,11 +11,11 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 @Slf4j
-public class ScrapperGateway {
+public class ScrapperGatewayService {
     private final String url;
     private final RestTemplate restTemplate;
 
-    public ScrapperGateway(ScrapperConfiguration scrapperConfiguration) {
+    public ScrapperGatewayService(ScrapperConfiguration scrapperConfiguration) {
         this.url = scrapperConfiguration.getProperties().getBaseUrl();
         this.restTemplate = scrapperConfiguration.getRestTemplate();
     }
@@ -34,6 +34,8 @@ public class ScrapperGateway {
         return null;
     }
 
+    // Since there is a limit in Snscrape, this function is not used in the code.
+    // Leave it here, might be useful later.
     public Object getRepliesByConversationId(Long conversationId, String username) {
         try {
             log.info("calling scraper to fetch replies for user = {} and conv {} ", username, conversationId);

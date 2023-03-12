@@ -2,8 +2,6 @@ package com.ai.demo.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,10 +23,6 @@ public class TweetDetail {
     @JoinColumn(name = "tweet_id", referencedColumnName = "id")
     @ManyToOne
     private Tweet tweet;
-
-    @Column(name = "tweet_process_status")
-    @Enumerated(EnumType.STRING)
-    private TweetProcessStatus processStatus = TweetProcessStatus.NOT_PROCESSED;
 
     @Column(name = "process_counter")
     private Integer processCounter = 0;

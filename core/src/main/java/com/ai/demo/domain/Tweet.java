@@ -2,6 +2,8 @@ package com.ai.demo.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,8 +38,6 @@ public class Tweet {
     private Long inReplyToTweetId;
     @Column(name = "conversation_id")
     private Long conversationId;
-    @Column(name = "owner_id")
-    private Integer owner;
     @Column(name = "like_count")
     private Integer likeCount;
     @Column(name = "tweet_date")
@@ -49,6 +49,10 @@ public class Tweet {
 
     @Column(name = "view_count")
     private Integer viewCount;
+
+    @Column(name = "tweet_type")
+    @Enumerated(EnumType.STRING)
+    private TweetType tweetType;
 
     public Tweet(String date, String username, String content, Integer likeCount, Integer retweetCount,
                  Integer replyCount, Long inReplyToTweetId, Long conversationId, Long tweetId, Integer viewCount) {
@@ -66,5 +70,14 @@ public class Tweet {
     }
 
     public Tweet() {
+    }
+
+    private LocalDateTime dateMapper(String date) {
+        return LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"));
+    }
+
+    public Tweet setTweetType(TweetType tweetType) {
+        this.tweetType = tweetType;
+        return this;
     }
 }

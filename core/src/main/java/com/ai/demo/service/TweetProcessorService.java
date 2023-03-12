@@ -6,8 +6,7 @@ import com.ai.demo.domain.TweetDetail;
 import com.ai.demo.repo.AccountRepository;
 import com.ai.demo.repo.TweetDetailRepository;
 import com.ai.demo.repo.TweetRepository;
-import com.ai.demo.scraper.ScrapperGateway;
-import com.ai.demo.scraper.TweetMapperHelper;
+import com.ai.demo.util.TweetMapperHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TweetProcessorService {
-    private final ScrapperGateway scrapperGateway;
+    private final ScrapperGatewayService scrapperGatewayService;
     private final TweetRepository tweetRepository;
     private final AccountRepository accountRepository;
     private final TweetDetailRepository tweetDetailRepository;
@@ -43,7 +42,7 @@ public class TweetProcessorService {
         log.info("THREAD NAME = {} process begins for the username {} since {} until {}. Calling Scrapper service to fetch the tweets.",
                 threadName, account.getUsername(), since, until);
         var query = String.format("(from:%s) until:%s since:%s", account.getUsername(), until, since);
-        List<LinkedHashMap<String, Object>> tweetsByQuery = (List<LinkedHashMap<String, Object>>) scrapperGateway.getTweetsByQuery(query);
+        List<LinkedHashMap<String, Object>> tweetsByQuery = (List<LinkedHashMap<String, Object>>) scrapperGatewayService.getTweetsByQuery(query);
 
         log.info("THREAD NAME = {},  {} tweets fetched. Mapping data process is beginning.", threadName, tweetsByQuery.size());
         List<TweetDetail> tweetDetails = new ArrayList<>();
