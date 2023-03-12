@@ -12,3 +12,21 @@ The below diagram is a high-level demonstration.
 
 
 ![alt text](https://github.com/ehsansasanian/310-ai/blob/main/diagram.jpg)
+
+
+
+## Request Samples:
+1. Get tacked users
+```
+curl --location --request GET 'localhost:8080/accounts'
+```
+
+2. Get a conversation thread from start
+
+```
+curl --location --request GET 'http://localhost:8080/tweets/{conversation-id}'
+```
+3. Get a list of accounts which the most interaction
+```
+curl --location --request GET 'http://localhost:8080/audience/{username}'
+```
