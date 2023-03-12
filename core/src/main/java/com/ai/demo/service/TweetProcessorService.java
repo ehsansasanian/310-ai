@@ -6,7 +6,6 @@ import com.ai.demo.domain.TweetDetail;
 import com.ai.demo.repo.AccountRepository;
 import com.ai.demo.repo.TweetDetailRepository;
 import com.ai.demo.repo.TweetRepository;
-import com.ai.demo.util.TweetMapperHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +15,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import static com.ai.demo.domain.TweetType.MAIN_CONVERSATION;
 
 @Slf4j
 @Service
@@ -47,7 +48,7 @@ public class TweetProcessorService {
         log.info("THREAD NAME = {},  {} tweets fetched. Mapping data process is beginning.", threadName, tweetsByQuery.size());
         List<TweetDetail> tweetDetails = new ArrayList<>();
         List<Tweet> tweets = tweetsByQuery.stream()
-                .map(TweetMapperHelper::mapTweet)
+                .map(each -> mapTweet(each, account))
                 .filter(tweet -> tweet.getInReplyToTweetId() == null)
                 .peek(tweet -> mapDetail(tweetDetails, tweet))
                 .toList();
@@ -57,6 +58,18 @@ public class TweetProcessorService {
         account.setLastProcessDate(until);
         accountRepository.save(account);
         log.info("THREAD NAME = {}, {} tweets mapped, and saved in the DB.", threadName, tweets.size());
+    }
+
+    private static Tweet mapTweet(LinkedHashMap<String, Object> each, Account account) {
+        // map tweet
+        Tweet tweet = new Tweet((String) each.get("date"), (String) each.get("username"), (String) each.get("content"),
+                (Integer) each.get("like_count"), (Integer) each.get("retweet_count"), (Integer) each.get("reply_count"),
+                (Long) each.get("in_reply_to_tweet_id"), (Long) each.get("conversation_id"), (Long) each.get("tweet_id"),
+                (Integer) each.get("view_count"));
+        tweet.setConversationOwner(account);
+        tweet.setTweetType(MAIN_CONVERSATION);
+        // check if the fetched tweet is in reply to someone
+        return tweet;
     }
 
     private static void mapDetail(List<TweetDetail> tweetDetails, Tweet tweet) {

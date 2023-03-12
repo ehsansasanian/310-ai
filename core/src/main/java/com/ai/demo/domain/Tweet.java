@@ -7,6 +7,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -14,13 +16,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Entity
-@Table(name = "tweets"
-//        , indexes = {
-//        @Index(name = "idx.tweet_id", columnList = "tweet_id"),
-//        @Index(name = "idx.username", columnList = "username")
-//        @Index(name = "idx.tweet_id_username", columnList = "tweet_id, username")
-//}
-)
+@Table(name = "tweets")
 @Data
 public class Tweet {
     @Id
@@ -54,6 +50,11 @@ public class Tweet {
     @Enumerated(EnumType.STRING)
     private TweetType tweetType;
 
+    @JoinColumn(name = "conversation_owner_id")
+    @ManyToOne
+    private Account conversationOwner;
+
+
     public Tweet(String date, String username, String content, Integer likeCount, Integer retweetCount,
                  Integer replyCount, Long inReplyToTweetId, Long conversationId, Long tweetId, Integer viewCount) {
         this.content = content;
@@ -70,14 +71,5 @@ public class Tweet {
     }
 
     public Tweet() {
-    }
-
-    private LocalDateTime dateMapper(String date) {
-        return LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"));
-    }
-
-    public Tweet setTweetType(TweetType tweetType) {
-        this.tweetType = tweetType;
-        return this;
     }
 }

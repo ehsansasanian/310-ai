@@ -28,9 +28,4 @@ public class TweetDetail {
     private Integer processCounter = 0;
 
     private LocalDateTime lastProcessTime = LocalDateTime.now();
-
-    public void incrementProcess() {
-        processCounter++;
-        lastProcessTime = LocalDateTime.now();
-    }
 }

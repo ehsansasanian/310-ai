@@ -23,6 +23,10 @@ public class ReplyProcessorService {
 
     @Transactional
     public void processReply(ReplyMessage replyMessage, Account trackingAccount) {
+        if (trackingAccount == null) {
+            log.error("Tracking account is null. message was not proceed for conversation {}.", replyMessage.getConversationId());
+            return;
+        }
         Tweet mainConversation = tweetRepository.findByTweetId(replyMessage.getConversationId());
         if (mainConversation == null) {
             log.error("[Main Conversation Not Found For Tweet {}]", replyMessage.getTweetId());
@@ -38,10 +42,11 @@ public class ReplyProcessorService {
             tweetRepository.save(existingTweet);
         } else {
             Tweet reply = this.getReply(replyMessage, mainConversation);
+            reply.setConversationOwner(trackingAccount);
             tweetRepository.save(reply);
             activeAudienceService.logActiveAudience(reply, trackingAccount);
-            System.out.println("SAVED AND LOGGED \n\n\n");
         }
+        log.info("Reply saved successfully.");
     }
 
     private Tweet getReply(ReplyMessage replyMessage, Tweet mainConversation) {
