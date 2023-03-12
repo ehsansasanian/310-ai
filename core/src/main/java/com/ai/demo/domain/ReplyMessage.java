@@ -20,5 +20,7 @@ public class ReplyMessage {
     private Integer replyCount;
     @JsonProperty(value = "likes_count")
     private Integer likeCount;
+    @JsonProperty(value = "retweets_count")
+    private Integer retweetCounts;
     private Boolean retweet;
 }

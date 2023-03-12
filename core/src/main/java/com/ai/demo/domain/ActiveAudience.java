@@ -1,5 +1,6 @@
 package com.ai.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,9 +19,11 @@ import java.time.LocalDateTime;
 public class ActiveAudience {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @JsonIgnore
     private Long id;
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     @ManyToOne
+    @JsonIgnore
     private Account account;
     @Column(name = "audience_username", unique = true)
     private String audienceUserName;
@@ -28,6 +31,7 @@ public class ActiveAudience {
     private Integer replyCount = 0;
 
     @Column(name = "lastModifiedTime")
+    @JsonIgnore
     private LocalDateTime lastModifiedTime;
 
     public void incrementActivityCounter() {

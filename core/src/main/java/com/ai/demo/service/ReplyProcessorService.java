@@ -53,10 +53,10 @@ public class ReplyProcessorService {
         Tweet reply = new Tweet();
         reply.setContent(replyMessage.getContent());
         reply.setUsername(replyMessage.getUsername());
-        reply.setRetweetCount(reply.getRetweetCount());
+        reply.setRetweetCount(replyMessage.getRetweetCounts());
         reply.setTweetId(replyMessage.getTweetId());
         reply.setInReplyToTweetId(mainConversation.getTweetId());
-        reply.setConversationId(reply.getConversationId());
+        reply.setConversationId(replyMessage.getConversationId());
         reply.setLikeCount(replyMessage.getLikeCount());
         reply.setCreationDate(LocalDateTime.now());
         reply.setTweetDate(LocalDateTime.parse(replyMessage.getDateTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z")));
