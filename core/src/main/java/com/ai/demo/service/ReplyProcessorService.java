@@ -29,7 +29,7 @@ public class ReplyProcessorService {
         }
         Tweet mainConversation = tweetRepository.findByTweetId(replyMessage.getConversationId());
         if (mainConversation == null) {
-            log.error("[Main Conversation Not Found For Tweet {}]", replyMessage.getTweetId());
+            log.error("[Main Tweet Does Not Exist For Reply {}]", replyMessage.getTweetId());
             return;
         }
 
@@ -37,6 +37,12 @@ public class ReplyProcessorService {
         if (Objects.equals(replyMessage.getUsername(), trackingAccount.getUsername())) {
             // it should already exist in the DB
             Tweet existingTweet = tweetRepository.findByTweetId(replyMessage.getTweetId());
+
+            if (existingTweet == null) {
+                log.error("[Tweet Conversation Not Found For Tweet {}]", replyMessage.getTweetId());
+                return;
+            }
+
             // only update its type
             existingTweet.setTweetType(TweetType.REPLY_BY_OWNER);
             tweetRepository.save(existingTweet);
